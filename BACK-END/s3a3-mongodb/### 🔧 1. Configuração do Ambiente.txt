@@ -1,0 +1,78 @@
+### 🔧 **1. Configuração do Ambiente**
+#### **Opção 1: Instalando o MongoDB localmente**
+Se ainda não tem o MongoDB instalado, siga estas etapas:
+
+- **Windows:** Baixe e instale o MongoDB Community Server:  
+  👉 [Download MongoDB](https://www.mongodb.com/try/download/community)  
+- **Linux:** Instale via terminal:
+  ```bash
+  sudo apt update
+  sudo apt install -y mongodb
+  ```
+- **Mac:** Instale via Homebrew:
+  ```bash
+  brew tap mongodb/brew
+  brew install mongodb-community
+  ```
+
+Após a instalação, inicie o serviço MongoDB:  
+```bash
+mongod
+```
+
+#### **Opção 2: Usando o MongoDB Atlas (Nuvem)**
+1. Crie uma conta no [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. Configure um cluster gratuito e crie um banco de dados chamado `socialMediaDB`.
+3. Conecte-se ao banco usando **MongoDB Compass** ou **Mongo Shell**, utilizando a string de conexão fornecida pelo Atlas.
+
+---
+
+### 🗄️ **2. Criando o banco de dados e a coleção `posts`**
+Abra o terminal e inicie o Mongo Shell:  
+```bash
+mongosh
+```
+Ou conecte-se ao seu cluster no Atlas.
+
+Crie o banco de dados e a coleção:
+```javascript
+use socialMediaDB;  // Seleciona ou cria o banco
+db.createCollection("posts");  // Cria a coleção de posts
+```
+
+---
+
+### ✍ **3. Inserindo documentos na coleção `posts`**
+Agora, insira algumas postagens com usuários, comentários e curtidas:
+
+```javascript
+db.posts.insertMany([
+  {
+    user: "joao123",
+    content: "Primeiro post no MongoDB!",
+    timestamp: new Date("2025-03-06T12:00:00Z"),
+    comments: [
+      { user: "ana456", comment: "Muito bom!", timestamp: new Date("2025-03-06T12:05:00Z") },
+      { user: "carlos789", comment: "Interessante!", timestamp: new Date("2025-03-06T12:10:00Z") }
+    ],
+    likes: 15
+  },
+  {
+    user: "maria321",
+    content: "Adorando aprender banco de dados NoSQL.",
+    timestamp: new Date("2025-03-06T13:00:00Z"),
+    comments: [
+      { user: "joao123", comment: "MongoDB é incrível!", timestamp: new Date("2025-03-06T13:05:00Z") }
+    ],
+    likes: 25
+  }
+]);
+```
+
+Para confirmar que os documentos foram inseridos:
+```javascript
+db.posts.find().pretty();
+```
+
+---
+
