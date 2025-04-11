@@ -58,6 +58,7 @@ app.get("/alunos/:id", (req, res) => {
       }
 
       const aluno = jsonData.alunos.find(a => a.id === id);
+
       if (!aluno) {
           return res.status(404).json({ error: "Aluno não encontrado" });
       }
@@ -75,21 +76,24 @@ app.get("/alunos/nome/:nome", (req, res) => {
           return res.status(500).json({ error: "Erro ao ler o arquivo JSON" });
       }
 
-      const aluno = jsonData.alunos.find(a => a.nome.toLowerCase() === nomeBuscado);
-      if (!aluno) {
+      // Busca alunos cujo nome contenha o termo (case insensitive)
+      const alunosEncontrados = jsonData.alunos.filter(a => 
+          a.nome.toLowerCase().includes(nomeBuscado)
+      );
+
+      if (alunosEncontrados.length === 0) {
           return res.status(404).json({ error: "Aluno não encontrado" });
       }
 
-      res.json(aluno);
+      res.json(alunosEncontrados); // Retorna uma lista de alunos encontrados
   });
 });
 
 
 
+
+
 //inicia o servidor de aplicação
-
-
-
 app.listen(port, () =>
   console.log(`Server running on port http://localhost:${port}`)
 );
