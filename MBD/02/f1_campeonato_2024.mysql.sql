@@ -1,7 +1,7 @@
 
 -- Criação das tabelas
 
-DROP TABLE IF EXISTS resultado, corrida, piloto, equipe, circuito, campeonato CASCADE;
+DROP TABLE IF EXISTS resultado, corrida, piloto, equipe, circuito, campeonato;
 
 CREATE TABLE campeonato (
     id SERIAL PRIMARY KEY,
