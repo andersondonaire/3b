@@ -1,1 +1,76 @@
+10 Consultas SELECT para Estudo
+1.	Listar todos os pilotos com suas respectivas equipes:
+
+SELECT piloto.nome AS piloto, equipe.nome AS equipe
+FROM piloto
+JOIN equipe ON piloto.equipe_id = equipe.id;
+
+2.	Listar todas as corridas com data e nome do circuito:
+
+SELECT corrida.data, circuito.nome AS circuito
+FROM corrida
+JOIN circuito ON corrida.circuito_id = circuito.id;
+
+3.	Ver a pontuação de cada piloto em todas as corridas:
+
+SELECT piloto.nome, corrida.data, circuito.nome AS circuito, resultado.pontos
+FROM resultado
+JOIN piloto ON resultado.piloto_id = piloto.id
+JOIN corrida ON resultado.corrida_id = corrida.id
+JOIN circuito ON corrida.circuito_id = circuito.id;
+
+4.	Total de pontos por piloto no campeonato:
+
+SELECT piloto.nome, SUM(resultado.pontos) AS total_pontos
+FROM resultado
+JOIN piloto ON resultado.piloto_id = piloto.id
+GROUP BY piloto.nome
+ORDER BY total_pontos DESC;
+
+5.	Classificação geral de equipes (somando pontos dos dois pilotos):
+
+SELECT equipe.nome AS equipe, SUM(resultado.pontos) AS total_pontos
+FROM resultado
+JOIN piloto ON resultado.piloto_id = piloto.id
+JOIN equipe ON piloto.equipe_id = equipe.id
+GROUP BY equipe.nome
+ORDER BY total_pontos DESC;
+
+6.	Listar os vencedores (1º lugar) de cada corrida:
+
+SELECT corrida.data, circuito.nome AS circuito, piloto.nome AS vencedor
+FROM resultado
+JOIN corrida ON resultado.corrida_id = corrida.id
+JOIN piloto ON resultado.piloto_id = piloto.id
+JOIN circuito ON corrida.circuito_id = circuito.id
+WHERE resultado.posicao = 1;
+
+7.	Ver quais circuitos estão em quais países:
+
+SELECT nome, pais FROM circuito;
+
+8.	Listar os pilotos por país:
+
+SELECT pais, COUNT(*) AS total_pilotos
+FROM piloto
+GROUP BY pais;
+
+9.	Listar todas as corridas de um campeonato específico (ex: 2024):
+
+SELECT corrida.data, circuito.nome
+FROM corrida
+JOIN campeonato ON corrida.campeonato_id = campeonato.id
+JOIN circuito ON corrida.circuito_id = circuito.id
+WHERE campeonato.ano = 2024;
+
+10.	Mostrar a posição final de um piloto específico (ex: Max Verstappen):
+
+SELECT corrida.data, circuito.nome, resultado.posicao
+FROM resultado
+JOIN corrida ON resultado.corrida_id = corrida.id
+JOIN circuito ON corrida.circuito_id = circuito.id
+JOIN piloto ON resultado.piloto_id = piloto.id
+WHERE piloto.nome = 'Max Verstappen';
+
+________________________________________
 
