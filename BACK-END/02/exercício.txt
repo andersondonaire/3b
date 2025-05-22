@@ -1,0 +1,144 @@
+## 🛠️ **Passo a Passo: Express + PostgreSQL (Render) + Codespaces + Deploy no Render**
+
+### 1. **Crie o repositório no GitHub e abra com Codespaces**
+
+1. Vá para [github.com](https://github.com) e crie um novo repositório (ex: `biblioteca-express-pg`).
+2. No repositório criado, clique em `<> Code` > `Codespaces` > `Create codespace on main`.
+
+---
+
+### 2. **Inicialize o projeto Express**
+
+No Codespaces:
+
+```bash
+npm init -y
+npm install express pg dotenv
+```
+
+Crie o arquivo `index.js`:
+
+```js
+const express = require('express');
+const { Pool } = require('pg');
+require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+
+// Conexão com o PostgreSQL
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // necessário para o Render
+  }
+});
+
+app.get('/', (req, res) => {
+  res.send('API de Biblioteca com PostgreSQL e Express!');
+});
+
+// Exemplo: Listar categorias
+app.get('/categorias', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM categoria');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao buscar categorias');
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
+});
+```
+
+---
+
+### 3. **Crie o `.env` com as credenciais do banco (Render)**
+
+Crie um arquivo `.env`:
+
+```env
+DATABASE_URL=postgres://usuario:senha@host:porta/nome_do_banco
+```
+
+Exemplo fictício:
+
+```env
+DATABASE_URL=postgres://admin:senha123@dpg-c1b2h4g1f1234k8r1ps0-a.oregon-postgres.render.com:5432/biblioteca_pg
+```
+
+> ❗ Importante: o Render exige que `ssl` esteja ativado com `rejectUnauthorized: false` como no exemplo acima.
+
+---
+
+### 4. **Adicione um script de inicialização**
+
+No `package.json`, em `"scripts"`:
+
+```json
+"scripts": {
+  "start": "node index.js"
+}
+```
+
+---
+
+### 5. **Ignore o `.env`**
+
+Crie um arquivo `.gitignore` com:
+
+```
+node_modules/
+.env
+```
+
+---
+
+### 6. **Configure o banco PostgreSQL no Render**
+
+1. Vá para [https://dashboard.render.com](https://dashboard.render.com)
+2. Clique em **Databases** > **New PostgreSQL**
+3. Dê um nome como `biblioteca_pg`
+4. Após a criação, pegue a string `Internal Database URL` ou `External URL` e use no `.env` local
+5. Faça o *upload* do script SQL que você forneceu antes (adaptado, se necessário), via DBeaver, pgAdmin ou qualquer cliente PostgreSQL.
+
+---
+
+### 7. **Suba seu código para o GitHub**
+
+```bash
+git add .
+git commit -m "Versão inicial da API Express com PostgreSQL"
+git push origin main
+```
+
+---
+
+### 8. **Publique no Render (Web Service)**
+
+1. Vá para [Render.com > New > Web Service](https://dashboard.render.com/)
+2. Escolha seu repositório GitHub
+3. Configure:
+
+   * **Name**: `api-biblioteca`
+   * **Build Command**: `npm install`
+   * **Start Command**: `npm start`
+   * **Environment**: Node
+   * **Environment Variables**:
+
+     * `DATABASE_URL`: (valor da sua string PostgreSQL do Render)
+4. Clique em **Create Web Service**
+
+---
+
+### ✅ Resultado
+
+Você terá sua API Express rodando no Render e conectada ao banco PostgreSQL também hospedado lá.
+
+---
+
