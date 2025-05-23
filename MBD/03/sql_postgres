@@ -1,0 +1,71 @@
+-- Criação das tabelas
+CREATE TABLE categoria (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE autor (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  nacionalidade VARCHAR(50)
+);
+
+CREATE TABLE livro (
+  id SERIAL PRIMARY KEY,
+  titulo VARCHAR(150) NOT NULL,
+  ano_publicacao INT,
+  fk_autor_id INT REFERENCES autor(id),
+  fk_categoria_id INT REFERENCES categoria(id),
+  disponivel BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE aluno (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  turma VARCHAR(10),
+  idade INT
+);
+
+CREATE TABLE emprestimo (
+  id SERIAL PRIMARY KEY,
+  fk_livro_id INT REFERENCES livro(id),
+  fk_aluno_id INT REFERENCES aluno(id),
+  data_emprestimo DATE,
+  data_devolucao DATE
+);
+
+-- Inserção de categorias
+INSERT INTO categoria (nome) VALUES
+('Ficção'), ('Didático'), ('Biografia'), ('Ciência'), ('História');
+
+-- Inserção de autores
+INSERT INTO autor (nome, nacionalidade) VALUES
+('Machado de Assis', 'Brasileira'),
+('J.K. Rowling', 'Britânica'),
+('Albert Einstein', 'Alemã'),
+('Monteiro Lobato', 'Brasileira'),
+('Yuval Noah Harari', 'Israelense');
+
+-- Inserção de livros
+INSERT INTO livro (titulo, ano_publicacao, fk_autor_id, fk_categoria_id) VALUES
+('Dom Casmurro', 1899, 1, 1),
+('Harry Potter e a Pedra Filosofal', 1997, 2, 1),
+('A Teoria da Relatividade', 1916, 3, 4),
+('O Sítio do Picapau Amarelo', 1939, 4, 1),
+('Sapiens: Uma Breve História da Humanidade', 2011, 5, 5);
+
+-- Inserção de alunos
+INSERT INTO aluno (nome, turma, idade) VALUES
+('Ana Beatriz', '2A', 16),
+('Carlos Eduardo', '2A', 17),
+('Juliana Rocha', '3B', 18),
+('Pedro Henrique', '1C', 15),
+('Mariana Silva', '3B', 18);
+
+-- Inserção de empréstimos
+INSERT INTO emprestimo (fk_livro_id, fk_aluno_id, data_emprestimo, data_devolucao) VALUES
+(1, 1, '2024-08-01', '2024-08-15'),
+(2, 2, '2024-08-02', NULL),
+(3, 3, '2024-08-05', '2024-08-20'),
+(4, 4, '2024-08-10', NULL),
+(5, 5, '2024-08-12', NULL);
