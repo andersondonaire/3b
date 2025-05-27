@@ -1,0 +1,22 @@
+Abaixo estão 10 exercícios com foco em cláusulas SELECT utilizando filtros 
+(WHERE, LIKE, BETWEEN, IN, IS NULL, etc.) e funções (COUNT, AVG, UPPER, LOWER, NOW, DATEDIFF, etc.):
+
+1- Liste todos os livros publicados antes do ano 2000.
+
+2-Mostre os nomes e nacionalidades dos autores brasileiros.
+
+3-Liste os alunos com idade entre 16 e 18 anos (inclusive).
+
+4-Recupere os títulos dos livros que estão atualmente emprestados (ainda não devolvidos).
+
+5-Exiba os nomes dos alunos que pegaram livros emprestados da categoria 'Ficção'.
+
+6-Mostre a quantidade total de livros cadastrados no sistema.
+
+7-Exiba a média de idade dos alunos cadastrados.
+
+8-Liste os livros cujo título contém a palavra 'História'.
+
+9-Mostre todos os empréstimos realizados no mês de agosto de 2024.
+
+10-Liste o nome do aluno e a data de devolução dos livros que já foram devolvidos.
